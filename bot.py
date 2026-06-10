@@ -1,10 +1,11 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes, CommandHandler
+from typing_extensions import ContextManager
 
 import credentials
 from gpt import ChatGptService
 from util import (load_message, send_text, send_image, show_main_menu,
-                  default_callback_handler)
+                  default_callback_handler, load_prompt,send_text_buttons)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -21,15 +22,31 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # 'command': 'button text'
 
     })
+async def random(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_image(update, context, 'random')
+    prompt = load_prompt('random')
+    response = await chat_gpt.send_question(prompt,'Давай рандомний факт')
+    await send_text_buttons(update, context, response,
+                            {
+                              "random-finish":"Закінчити",
+                                "random_one_more":"Хочу ще факт"
+                            })
 
+async def random_buttons_handler(update: Update, context: CallbackQueryHandler):
+    query = update.callback_query.data
+    if query == "random-finish":
+        await start(update, context)
+    elif query == "random_one_more":
+        await random(update, context)
 
 chat_gpt = ChatGptService(credentials.ChatGPT_TOKEN)
 app = ApplicationBuilder().token(credentials.BOT_TOKEN).build()
 
 # Зареєструвати обробник команди можна так:
 app.add_handler(CommandHandler('start', start))
+app.add_handler(CommandHandler('random', random))
 
 # Зареєструвати обробник колбеку можна так:
-# app.add_handler(CallbackQueryHandler(app_button, pattern='^app_.*'))
+app.add_handler(CallbackQueryHandler(random_buttons_handler, pattern='^random_.*'))
 app.add_handler(CallbackQueryHandler(default_callback_handler))
 app.run_polling()
