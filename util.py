@@ -14,6 +14,8 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.enums import ParseMode
 from aiogram.exceptions import TelegramBadRequest
 import os
+import credentials
+from gpt import ChatGptService
 
 
 # Примітка: для роботи методів, які використовують self.bot або викликаються поза хендлерами,
@@ -117,6 +119,10 @@ async def default_callback_handler(callback_query: CallbackQuery):
     # Відправляємо повідомлення в той самий чат, де натиснули кнопку
     await send_html(callback_query.message, f'You have pressed button with <b>{query}</b> callback')
 
+
+
 class DialogStates(StatesGroup):
     TEXT_GPT = State()
     TEXT_DIALOG = State()
+
+chat_gpt = ChatGptService(credentials.ChatGPT_TOKEN)
