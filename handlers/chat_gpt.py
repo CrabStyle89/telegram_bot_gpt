@@ -9,14 +9,14 @@ from handlers.start import start
 
 router = Router()
 
-
+# Обробник команди gpt
 @router.message(Command("gpt"))
 async def gpt_cmd(message: Message, state: FSMContext):
     await send_image(message, 'gpt')
     await state.set_state(DialogStates.TEXT_GPT)
     await message.answer("🤖 Режим чату активовано, очікую на повідомлення")
 
-
+# Обробник повідомлень
 @router.message(DialogStates.TEXT_GPT)
 async def gpt_dialog_handler(message: Message):
     if message.text and message.text.startswith('/'):
@@ -30,7 +30,7 @@ async def gpt_dialog_handler(message: Message):
         buttons={"gpt_finish": "Закінчити розмову ❌"}
     )
 
-
+# Обробник кнопки виходу
 @router.callback_query(F.data == "gpt_finish")
 async def gpt_finish_callback_handler(callback_query: CallbackQuery, state: FSMContext, bot: Bot):
     await callback_query.answer()
