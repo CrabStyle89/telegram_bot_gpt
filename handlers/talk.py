@@ -66,6 +66,6 @@ async def talk_dialog_handler(message: Message):
 @router.callback_query(F.data == "talk_finish")
 async def talk_finish_callback_handler(callback_query: CallbackQuery, state: FSMContext, bot: Bot):
     await callback_query.answer()
-    await state.clear()  # Обов'язково чистим FSM стан
+    await state.clear()
     await callback_query.message.answer("Духовний сеанс завершено. Повертаємось...")
     await start(callback_query.message, bot)

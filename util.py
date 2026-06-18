@@ -124,5 +124,7 @@ async def default_callback_handler(callback_query: CallbackQuery):
 class DialogStates(StatesGroup):
     TEXT_GPT = State()
     TEXT_DIALOG = State()
+    TEXT_QUIZ = State()
+    TEXT_TRANSLATE = State()
 
 chat_gpt = ChatGptService(credentials.ChatGPT_TOKEN)

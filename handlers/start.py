@@ -20,7 +20,8 @@ async def start(message: Message, bot: Bot):
         'random': 'Дізнатися випадковий цікавий факт 🧠',
         'gpt': 'Задати питання чату GPT 🤖',
         'talk': 'Поговорити з відомою особистістю 👤',
-        'quiz': 'Взяти участь у квізі ❓'
+        'quiz': 'Взяти участь у квізі ❓',
+        'translate' : 'Перекласти текст на визначену мову.漢字'
     })
     prompt = load_prompt('main')
     chat_gpt.set_prompt(prompt)
