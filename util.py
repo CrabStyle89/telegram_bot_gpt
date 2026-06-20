@@ -126,5 +126,7 @@ class DialogStates(StatesGroup):
     TEXT_DIALOG = State()
     TEXT_QUIZ = State()
     TEXT_TRANSLATE = State()
+    REC_WAITING = State()
+    REC_VIEWING = State()
 
 chat_gpt = ChatGptService(credentials.ChatGPT_TOKEN)
